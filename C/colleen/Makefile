@@ -1,6 +1,6 @@
-NAME= Grace
+NAME= Colleen
 
-SRCS=	Grace.c
+SRCS=	Colleen.c
 
 OBJ= $(SRCS:%.cpp=%.o)
 
@@ -9,6 +9,7 @@ CC= gcc
 CFLAGS=	-Wall -Werror -Wextra 
 
 GREEN = \033[0;32m
+RESET = \033[0m
 
 all: ${NAME}
 
@@ -21,18 +22,17 @@ $(NAME): $(OBJ)
 
 diff: $(NAME)
 	@echo "Compiling with clang, executing and comparing..."
-	gcc -Wall -Wextra -Werror -o $(NAME) $(NAME).c
-	./$(NAME)
-	diff $(NAME)_kid.c $(NAME).c || true
-	rm -f $(NAME)_kid.c
-
+	clang -Wall -Wextra -Werror -o $(NAME) $(NAME).c
+	./$(NAME) > tmp_$(NAME)
+	diff tmp_$(NAME) $(NAME).c || true
+	rm -f tmp_$(NAME)
 
 clean:
 	rm -rf *.o
 
 fclean: clean
-	rm -rf $(NAME) $(NAME)_kid.c
+	rm -rf $(NAME)
 
 re: fclean all
 
-PHONY: all fclean clean re diff
+.PHONY: all clean fclean re diff 
